@@ -1,505 +1,789 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>FinSim | What-If Financial Simulator</title>
-  <meta
-    name="description"
-    content="Explore how financial decisions may affect your future savings."
-  />
+    <title>FinSim | What-If Financial Simulator</title>
 
-  <link rel="stylesheet" href="style.css" />
+    <meta
+        name="description"
+        content="Explore how financial decisions may affect your future savings."
+    >
+
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  <header class="site-header">
-    <a href="#" class="brand">
-      <span class="brand-mark">
-    <span>F</span><span>S</span>
-    </span>
 
-      <span>
-        <strong>FinSim</strong>
-        <small>What-If Simulator</small>
-      </span>
-    </a>
+<div class="app-shell">
 
-    <button type="button" class="reset-button" id="resetButton">
-      Reset
-    </button>
-  </header>
+    <!-- ================= HEADER ================= -->
 
-  <main class="app-container">
+    <header class="topbar">
+
+        <a href="#" class="brand" id="brandHome">
+
+            <span class="brand-mark">
+                <span>F</span><span>S</span>
+            </span>
+
+            <span class="brand-text">
+                <strong>FinSim</strong>
+                <small>What-If Simulator</small>
+            </span>
+
+        </a>
+
+        <button
+            type="button"
+            class="reset-button"
+            id="resetButton"
+        >
+            Reset
+        </button>
+
+    </header>
+
+
+    <!-- ================= HERO ================= -->
+
     <section class="hero-section">
-      <div class="hero-content">
-        <p class="eyebrow">YOUR FINANCIAL DECISIONS, PREVIEWED</p>
 
-        <h1>
-          What if your money
-          <span>could show you the future?</span>
-        </h1>
+        <div class="hero-copy">
 
-        <p class="hero-description">
-          Enter your current financial details, choose a scenario, and explore
-          how it could affect your savings goals.
-        </p>
-      </div>
+            <p class="eyebrow">
+                YOUR FINANCIAL DECISIONS, PREVIEWED
+            </p>
 
-      <div class="hero-decoration" aria-hidden="true">
-        <div class="decoration-circle circle-one"></div>
-        <div class="decoration-circle circle-two"></div>
-        <div class="decoration-card">
-          <span>Projected savings</span>
-          <strong>₹2,84,500</strong>
-          <small>Based on your current plan</small>
+            <h1>
+                What if your money
+                <span>could show you the future?</span>
+            </h1>
+
+            <p>
+                Enter your current financial details, choose a scenario,
+                and explore how it could affect your savings goals.
+            </p>
+
+            <div class="hero-badge">
+
+                <div class="hero-badge-icon">
+                    ₹
+                </div>
+
+                <div>
+                    <strong>Projected savings</strong>
+                    <span id="heroProjectedSavings">₹2,84,500</span>
+                    <small>Based on your current plan</small>
+                </div>
+
+            </div>
+
         </div>
-      </div>
+
     </section>
+
+
+    <!-- ================= MAIN FORM ================= -->
 
     <form id="simulationForm" novalidate>
-      <section class="section-card">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">01</p>
-            <h2>Your financial snapshot</h2>
-            <p>
-              Start with a simple picture of your current income, savings, and
-              monthly expenses.
-            </p>
-          </div>
-        </div>
 
-        <div class="form-grid">
-          <div class="input-group">
-            <label for="monthlyIncome">Monthly income</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="monthlyIncome"
-                name="monthly_income"
-                min="0"
-                placeholder="60000"
-                required
-              />
+
+        <!-- ================= SECTION 01 ================= -->
+
+        <section class="section-card">
+
+            <div class="section-heading">
+
+                <p class="section-number">01</p>
+
+                <h2>Your financial snapshot</h2>
+
+                <p>
+                    Start with a simple picture of your current
+                    income and savings.
+                </p>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="otherIncome">Other monthly income</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="otherIncome"
-                name="other_income"
-                min="0"
-                placeholder="5000"
-                value="0"
-              />
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label for="monthlyIncome">
+                        Monthly income
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="monthlyIncome"
+                            min="0"
+                            placeholder="60000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="otherIncome">
+                        Other monthly income
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="otherIncome"
+                            min="0"
+                            value="0"
+                            placeholder="5000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="currentSavings">
+                        Current savings
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="currentSavings"
+                            min="0"
+                            placeholder="200000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="existingEmi">
+                        Existing EMI
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="existingEmi"
+                            min="0"
+                            value="0"
+                            placeholder="5000"
+                        >
+
+                    </div>
+
+                </div>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="currentSavings">Current savings</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="currentSavings"
-                name="current_savings"
-                min="0"
-                placeholder="200000"
-                required
-              />
+        </section>
+
+
+
+        <!-- ================= SECTION 02 ================= -->
+
+        <section class="section-card">
+
+            <div class="section-heading">
+
+                <p class="section-number">02</p>
+
+                <h2>Your monthly expenses</h2>
+
+                <p>
+                    Add your usual expenses so FinSim can estimate
+                    your monthly cash flow.
+                </p>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="existingEmi">Existing EMI</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="existingEmi"
-                name="existing_emi"
-                min="0"
-                placeholder="5000"
-                value="0"
-              />
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label for="rent">Rent</label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="rent"
+                            min="0"
+                            value="0"
+                            placeholder="15000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="food">Food</label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="food"
+                            min="0"
+                            value="0"
+                            placeholder="6000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="transport">Transport</label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="transport"
+                            min="0"
+                            value="0"
+                            placeholder="3000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="utilities">Utilities</label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="utilities"
+                            min="0"
+                            value="0"
+                            placeholder="3000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="otherExpenses">
+                        Other expenses
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="otherExpenses"
+                            min="0"
+                            value="0"
+                            placeholder="8000"
+                        >
+
+                    </div>
+
+                </div>
+
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section class="section-card">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">02</p>
-            <h2>Your monthly expenses</h2>
-            <p>
-              Add your usual expenses so the simulator can estimate your
-              monthly cash flow.
-            </p>
-          </div>
-        </div>
+        </section>
 
-        <div class="form-grid">
-          <div class="input-group">
-            <label for="rent">Rent</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="rent"
-                name="rent"
-                min="0"
-                placeholder="15000"
-                value="0"
-              />
+
+
+        <!-- ================= SECTION 03 ================= -->
+
+        <section class="section-card">
+
+            <div class="section-heading">
+
+                <p class="section-number">03</p>
+
+                <h2>Your savings goal</h2>
+
+                <p>
+                    Tell FinSim what you are working towards.
+                </p>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="food">Food</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="food"
-                name="food"
-                min="0"
-                placeholder="6000"
-                value="0"
-              />
+
+            <div class="form-grid">
+
+                <div class="input-group">
+
+                    <label for="goalAmount">
+                        Goal amount
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <span class="input-prefix">₹</span>
+
+                        <input
+                            type="number"
+                            id="goalAmount"
+                            min="0"
+                            placeholder="800000"
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="goalDeadline">
+                        Goal deadline
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="number"
+                            id="goalDeadline"
+                            min="1"
+                            placeholder="36"
+                        >
+
+                        <span class="input-suffix">
+                            months
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="input-group">
+
+                    <label for="simulationMonths">
+                        Simulation period
+                    </label>
+
+                    <div class="input-wrapper">
+
+                        <input
+                            type="number"
+                            id="simulationMonths"
+                            min="1"
+                            max="120"
+                            value="36"
+                        >
+
+                        <span class="input-suffix">
+                            months
+                        </span>
+
+                    </div>
+
+                </div>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="transport">Transport</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="transport"
-                name="transport"
-                min="0"
-                placeholder="3000"
-                value="0"
-              />
+        </section>
+
+
+
+        <!-- ================= SECTION 04 ================= -->
+
+        <section class="section-card">
+
+            <div class="section-heading">
+
+                <p class="section-number">04</p>
+
+                <h2>What do you want to simulate?</h2>
+
+                <p>
+                    Choose one decision to see how it may affect
+                    your financial future.
+                </p>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="utilities">Utilities</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="utilities"
-                name="utilities"
-                min="0"
-                placeholder="3000"
-                value="0"
-              />
+
+            <div class="scenario-grid" id="scenarioGrid">
+
+
+                <button
+                    type="button"
+                    class="scenario-card selected"
+                    data-scenario="purchase"
+                >
+
+                    <span class="scenario-icon">🛍️</span>
+
+                    <span class="scenario-title">
+                        Big purchase
+                    </span>
+
+                    <span class="scenario-description">
+                        What if I buy something expensive?
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="scenario-card"
+                    data-scenario="loan"
+                >
+
+                    <span class="scenario-icon">🏦</span>
+
+                    <span class="scenario-title">
+                        New loan
+                    </span>
+
+                    <span class="scenario-description">
+                        Can I afford a new loan?
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="scenario-card"
+                    data-scenario="income_change"
+                >
+
+                    <span class="scenario-icon">💼</span>
+
+                    <span class="scenario-title">
+                        Income change
+                    </span>
+
+                    <span class="scenario-description">
+                        What if my income changes?
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="scenario-card"
+                    data-scenario="recurring_expense"
+                >
+
+                    <span class="scenario-icon">🔄</span>
+
+                    <span class="scenario-title">
+                        Recurring expense
+                    </span>
+
+                    <span class="scenario-description">
+                        What if my monthly expenses change?
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="scenario-card"
+                    data-scenario="emergency"
+                >
+
+                    <span class="scenario-icon">🚨</span>
+
+                    <span class="scenario-title">
+                        Emergency expense
+                    </span>
+
+                    <span class="scenario-description">
+                        What if an unexpected expense occurs?
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="scenario-card"
+                    data-scenario="vacation"
+                >
+
+                    <span class="scenario-icon">✈️</span>
+
+                    <span class="scenario-title">
+                        Vacation
+                    </span>
+
+                    <span class="scenario-description">
+                        Can I afford a vacation?
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="scenario-card"
+                    data-scenario="savings_rate"
+                >
+
+                    <span class="scenario-icon">📈</span>
+
+                    <span class="scenario-title">
+                        Savings rate
+                    </span>
+
+                    <span class="scenario-description">
+                        What if I save more or less?
+                    </span>
+
+                </button>
+
             </div>
-          </div>
 
-          <div class="input-group">
-            <label for="otherExpenses">Other expenses</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="otherExpenses"
-                name="other_expenses"
-                min="0"
-                placeholder="8000"
-                value="0"
-              />
+
+            <!-- Dynamic scenario panel -->
+
+            <div
+                class="scenario-input-section"
+                id="scenarioInputSection"
+            >
+
+                <div class="scenario-input-heading">
+
+                    <span
+                        class="selected-scenario-icon"
+                        id="selectedScenarioIcon"
+                    >
+                        🛍️
+                    </span>
+
+                    <div>
+
+                        <h3 id="scenarioInputTitle">
+                            Big purchase
+                        </h3>
+
+                        <p id="scenarioInputDescription">
+                            Enter the cost and timing of the purchase.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div
+                    class="form-grid"
+                    id="scenarioInputs"
+                >
+                </div>
+
             </div>
-          </div>
-        </div>
-      </section>
 
-      <section class="section-card">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">03</p>
-            <h2>Your savings goal</h2>
-            <p>
-              Tell FinSim what you are working towards.
-            </p>
-          </div>
-        </div>
+        </section>
 
-        <div class="form-grid">
-          <div class="input-group">
-            <label for="goalAmount">Goal amount</label>
-            <div class="input-wrapper">
-              <span>₹</span>
-              <input
-                type="number"
-                id="goalAmount"
-                name="goal_amount"
-                min="0"
-                placeholder="800000"
-                required
-              />
-            </div>
-          </div>
 
-          <div class="input-group">
-            <label for="goalDeadline">Goal deadline</label>
-            <div class="input-wrapper">
-              <input
-                type="number"
-                id="goalDeadline"
-                name="goal_deadline_month"
-                min="1"
-                placeholder="36"
-                required
-              />
-              <span class="input-suffix">months</span>
-            </div>
-          </div>
 
-          <div class="input-group">
-            <label for="simulationMonths">Simulation period</label>
-            <div class="input-wrapper">
-              <input
-                type="number"
-                id="simulationMonths"
-                name="simulation_months"
-                min="1"
-                max="120"
-                placeholder="36"
-                value="36"
-                required
-              />
-              <span class="input-suffix">months</span>
-            </div>
-          </div>
-        </div>
-      </section>
+        <!-- ================= MESSAGE ================= -->
 
-      <section class="section-card scenario-section">
-        <div class="section-heading">
-          <div>
-            <p class="section-number">04</p>
-            <h2>What do you want to simulate?</h2>
-            <p>
-              Choose one decision to see how it may affect your financial
-              future.
-            </p>
-          </div>
-        </div>
+        <div
+            class="message-box hidden"
+            id="messageBox"
+        ></div>
 
-        <div class="scenario-grid" id="scenarioGrid">
-          <button
-            type="button"
-            class="scenario-card active"
-            data-scenario="purchase"
-          >
-            <span class="scenario-icon">🛍️</span>
-            <span class="scenario-title">Big purchase</span>
-            <span class="scenario-description">
-              What if I buy something expensive?
-            </span>
-          </button>
 
-          <button
-            type="button"
-            class="scenario-card"
-            data-scenario="loan"
-          >
-            <span class="scenario-icon">🏦</span>
-            <span class="scenario-title">New loan</span>
-            <span class="scenario-description">
-              Can I afford a new loan?
-            </span>
-          </button>
 
-          <button
-            type="button"
-            class="scenario-card"
-            data-scenario="income_change"
-          >
-            <span class="scenario-icon">💼</span>
-            <span class="scenario-title">Income change</span>
-            <span class="scenario-description">
-              What if my income changes?
-            </span>
-          </button>
+        <!-- ================= ACTION ================= -->
 
-          <button
-            type="button"
-            class="scenario-card"
-            data-scenario="recurring_expense"
-          >
-            <span class="scenario-icon">🔄</span>
-            <span class="scenario-title">Recurring expense</span>
-            <span class="scenario-description">
-              What if my monthly expenses change?
-            </span>
-          </button>
-
-          <button
-            type="button"
-            class="scenario-card"
-            data-scenario="emergency"
-          >
-            <span class="scenario-icon">🚨</span>
-            <span class="scenario-title">Emergency expense</span>
-            <span class="scenario-description">
-              What if an unexpected expense occurs?
-            </span>
-          </button>
-
-          <button
-            type="button"
-            class="scenario-card"
-            data-scenario="vacation"
-          >
-            <span class="scenario-icon">✈️</span>
-            <span class="scenario-title">Vacation</span>
-            <span class="scenario-description">
-              Can I afford a vacation?
-            </span>
-          </button>
-
-          <button
-            type="button"
-            class="scenario-card"
-            data-scenario="savings_rate"
-          >
-            <span class="scenario-icon">📈</span>
-            <span class="scenario-title">Savings rate</span>
-            <span class="scenario-description">
-              What if I save more or less?
-            </span>
-          </button>
-        </div>
-
-        <input
-          type="hidden"
-          id="selectedScenario"
-          name="scenario"
-          value="purchase"
-        />
-
-        <div class="scenario-input-panel">
-          <div class="scenario-input-heading">
-            <span class="selected-scenario-icon" id="selectedScenarioIcon">
-              🛍️
-            </span>
+        <section class="action-section">
 
             <div>
-              <h3 id="selectedScenarioTitle">Big purchase</h3>
-              <p id="selectedScenarioDescription">
-                Add the details of the purchase you are considering.
-              </p>
-            </div>
-          </div>
 
-          <div class="scenario-fields" id="scenarioFields">
-            <div class="input-group">
-              <label for="purchaseAmount">Purchase amount</label>
-              <div class="input-wrapper">
-                <span>₹</span>
-                <input
-                  type="number"
-                  id="purchaseAmount"
-                  name="purchase_amount"
-                  min="0"
-                  placeholder="80000"
-                />
-              </div>
+                <p class="action-label">
+                    Ready to explore your decision?
+                </p>
+
+                <p class="action-description">
+                    FinSim will prepare your simulation.
+                </p>
+
             </div>
 
-            <div class="input-group">
-              <label for="purchaseMonth">Purchase month</label>
-              <div class="input-wrapper">
-                <input
-                  type="number"
-                  id="purchaseMonth"
-                  name="purchase_month"
-                  min="1"
-                  placeholder="3"
-                />
-                <span class="input-suffix">month</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
 
-      <section class="action-section">
-        <div>
-          <p class="action-label">Ready to explore your decision?</p>
-          <p class="action-description">
-            Your information will be used to create a simulation request.
-          </p>
-        </div>
+            <button
+                type="submit"
+                class="simulate-button"
+                id="simulateButton"
+            >
 
-        <button type="submit" class="simulate-button">
-          Simulate my future
-          <span aria-hidden="true">→</span>
-        </button>
-      </section>
+                Simulate my future
+
+                <span class="button-arrow">
+                    →
+                </span>
+
+            </button>
+
+        </section>
+
     </form>
 
-    <section class="results-section hidden" id="resultsSection">
-      <div class="section-heading">
-        <div>
-          <p class="section-number">05</p>
-          <h2>Your simulation results</h2>
-          <p id="resultsMessage">
-            Your results will appear here after the simulation is connected.
-          </p>
+
+
+    <!-- ================= RESULTS ================= -->
+
+    <section
+        class="results-section hidden"
+        id="resultsSection"
+    >
+
+        <div class="section-heading">
+
+            <p class="section-number">05</p>
+
+            <h2>Your simulation results</h2>
+
+            <p id="resultsMessage">
+                Your preview is ready.
+            </p>
+
         </div>
-      </div>
 
-      <div class="results-grid">
-        <article class="result-card">
-          <span class="result-label">Goal status</span>
-          <strong id="goalStatus">Waiting</strong>
-          <small>Simulation result</small>
-        </article>
 
-        <article class="result-card">
-          <span class="result-label">Projected savings</span>
-          <strong id="projectedSavings">₹0</strong>
-          <small>At the end of the simulation</small>
-        </article>
+        <div class="results-grid">
 
-        <article class="result-card">
-          <span class="result-label">Goal impact</span>
-          <strong id="goalImpact">—</strong>
-          <small>Compared with your current plan</small>
-        </article>
-      </div>
 
-      <div class="chart-placeholder">
-        <span class="chart-placeholder-icon">📊</span>
-        <h3>Savings trajectory</h3>
-        <p>
-          The P10, P50, and P90 simulation chart will appear here when the
-          backend is connected.
-        </p>
-      </div>
+            <article class="result-card">
+
+                <span class="result-label">
+                    Goal status
+                </span>
+
+                <strong id="goalStatus">
+                    Waiting
+                </strong>
+
+                <small id="goalStatusDescription">
+                    Simulation result
+                </small>
+
+            </article>
+
+
+            <article class="result-card">
+
+                <span class="result-label">
+                    Projected savings
+                </span>
+
+                <strong id="projectedSavings">
+                    ₹0
+                </strong>
+
+                <small>
+                    At the end of the simulation
+                </small>
+
+            </article>
+
+
+            <article class="result-card">
+
+                <span class="result-label">
+                    Goal impact
+                </span>
+
+                <strong id="goalImpact">
+                    —
+                </strong>
+
+                <small id="goalImpactDescription">
+                    Compared with your current plan
+                </small>
+
+            </article>
+
+        </div>
+
+
+        <div class="chart-placeholder">
+
+            <span>📊</span>
+
+            <h3>
+                Savings trajectory
+            </h3>
+
+            <p>
+                The P10, P50 and P90 simulation chart
+                will appear here after the backend is connected.
+            </p>
+
+        </div>
+
     </section>
-  </main>
 
-  <footer class="site-footer">
-    <p>
-      FinSim is a prototype designed to help users explore possible financial
-      outcomes.
-    </p>
-  </footer>
 
-  <script src="index.js"></script>
+    <footer class="site-footer">
+
+        <p>
+            FinSim is a prototype designed to help users
+            explore possible financial outcomes.
+        </p>
+
+    </footer>
+
+</div>
+
+
+<script src="index.js"></script>
+
 </body>
 </html>
