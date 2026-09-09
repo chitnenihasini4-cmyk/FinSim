@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>What-If Simulator | Login</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+
+    <!-- html part -->
+
+
+  <div class="login-container" id="login">
+    
+    <!-- Left Panel: Pitch & Teaser -->
+    <div class="brand-panel">
+      <div class="brand-content">
+        <span class="badge">FinSim Simulator</span>
+        <h1>What if your financial decisions came with a <span>preview?</span></h1>
+        <p>Stop guessing how spending ₹1,000 extra impacts your future wealth. Simulate your goals in real time.</p>
+      </div>
+    </div>
+
+    <!-- Right Panel: Login Form -->
+    <div class="form-panel">
+      <div class="form-card">
+        <h2>Welcome Back</h2>
+        <p class="subtitle">Please enter your credentials to access your financial sandbox.</p>
+
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" required />
+          </div>
+
+          <div class="input-group">
+            <div class="label-row">
+              <label for="password">Password</label>
+              <a href="#" class="forgot-link">Forgot?</a>
+            </div>
+            <input type="password" id="password" placeholder="••••••••" required />
+          </div>
+
+          <button type="submit" class="btn-primary">Sign In to Simulate</button>
+        </form>
+
+        <p class="footer-text">
+          Don't have an account? <a href="#">Create One</a>
+        </p>
+      </div>
+    </div>
+
+
+
+    <!-- java part -->
+
+    <script>
+        let form = document.getElementById("login")
+        form.addEventListener("click", function(event){
+            event.preventDefault()
+        });
+    </script>
+
+
+</body>
+</html>
+</body>
+</html>
