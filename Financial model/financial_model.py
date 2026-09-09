@@ -421,12 +421,12 @@ def calculate_goal_impact(
     for data in baseline_projection:
         if data["month"] <= goal_deadline_month and data["savings"] >= goal_amount:
             baseline_goal_month = data["month"]
-        break
+            break
 
     for data in scenario_projection:
         if data["month"] <= goal_deadline_month and data["savings"] >= goal_amount:
             scenario_goal_month = data["month"]
-        break
+            break
 
     baseline_final_savings = baseline_projection[-1]["savings"]
     scenario_final_savings = scenario_projection[-1]["savings"]

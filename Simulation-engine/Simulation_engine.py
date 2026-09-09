@@ -5,7 +5,7 @@ import sys
 import os
 from pathlib import Path
 
-financial_model_dir = Path(__file__).resolve().parent / 'Financial model'
+financial_model_dir = Path(__file__).resolve().parent.parent / 'Financial model'
 sys.path.insert(0, str(financial_model_dir))
 
 try:
