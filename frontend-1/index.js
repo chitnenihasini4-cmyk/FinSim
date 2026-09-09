@@ -1,4 +1,4 @@
-```javascript
+javascript
 /* =========================================================
    FinSim — What-If Financial Simulator
    Frontend Controller
@@ -1085,4 +1085,4 @@ resetButton.addEventListener(
 console.log(
     "FinSim frontend loaded successfully."
 );
-```
+
