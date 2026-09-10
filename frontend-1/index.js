@@ -1310,9 +1310,11 @@ function displayRealResult(data) {
    CHART PLACEHOLDER
    ========================================================= */
 
-function updateChartPlaceholder(data) {
+/* =========================================================
+   SAVINGS CHART
+   ========================================================= */
 
-    let savingsChart = null;
+let savingsChart = null;
 
 
 function updateChartPlaceholder(data) {
@@ -1323,6 +1325,8 @@ function updateChartPlaceholder(data) {
     const scenario =
         data.scenario_projection || [];
 
+
+    /* Check that projection data exists */
 
     if (
         baseline.length === 0 ||
@@ -1338,35 +1342,32 @@ function updateChartPlaceholder(data) {
     }
 
 
-    /*
-     * Extract months
-     */
-
-    const labels =
-        scenario.map(
-            (item) => item.month
-        );
-
-
-    /*
-     * Extract savings values
-     */
+    /* Extract savings values */
 
     const baselineSavings =
         baseline.map(
-            (item) => Number(item.savings) || 0
+            (item) =>
+                Number(item.savings) || 0
         );
 
 
     const scenarioSavings =
         scenario.map(
-            (item) => Number(item.savings) || 0
+            (item) =>
+                Number(item.savings) || 0
         );
 
 
-    /*
-     * Final values
-     */
+    /* Extract months */
+
+    const labels =
+        scenario.map(
+            (item) =>
+                `Month ${item.month}`
+        );
+
+
+    /* Final savings */
 
     const baselineFinal =
         baselineSavings[
@@ -1384,9 +1385,9 @@ function updateChartPlaceholder(data) {
         scenarioFinal - baselineFinal;
 
 
-    /*
-     * Update summary values
-     */
+    /* =====================================================
+       UPDATE SUMMARY VALUES
+       ===================================================== */
 
     const baselineElement =
         document.getElementById(
@@ -1428,25 +1429,31 @@ function updateChartPlaceholder(data) {
 
     if (differenceElement) {
 
-        const sign =
-            difference > 0
-                ? "+"
-                : difference < 0
-                    ? "−"
-                    : "";
+        if (difference > 0) {
 
-        differenceElement.textContent =
-            sign +
-            formatCurrency(
-                Math.abs(difference)
-            );
+            differenceElement.textContent =
+                "+" +
+                formatCurrency(
+                    difference
+                );
+
+        }
+
+        else {
+
+            differenceElement.textContent =
+                formatCurrency(
+                    difference
+                );
+
+        }
 
     }
 
 
-    /*
-     * Get canvas
-     */
+    /* =====================================================
+       FIND CANVAS
+       ===================================================== */
 
     const canvas =
         document.getElementById(
@@ -1456,7 +1463,7 @@ function updateChartPlaceholder(data) {
 
     if (!canvas) {
 
-        console.warn(
+        console.error(
             "Savings chart canvas not found."
         );
 
@@ -1465,23 +1472,37 @@ function updateChartPlaceholder(data) {
     }
 
 
-    /*
-     * Destroy previous chart
-     *
-     * Important when the user runs
-     * multiple simulations.
-     */
+    /* =====================================================
+       CHECK CHART.JS
+       ===================================================== */
 
-    if (savingsChart) {
+    if (typeof Chart === "undefined") {
 
-        savingsChart.destroy();
+        console.error(
+            "Chart.js is not loaded."
+        );
+
+        return;
 
     }
 
 
-    /*
-     * Create the new chart
-     */
+    /* =====================================================
+       DESTROY PREVIOUS CHART
+       ===================================================== */
+
+    const existingChart = Chart.getChart(canvas);
+
+if (existingChart) {
+    existingChart.destroy();
+}
+
+savingsChart = null;
+
+
+    /* =====================================================
+       CREATE CHART
+       ===================================================== */
 
     savingsChart =
         new Chart(
@@ -1493,10 +1514,15 @@ function updateChartPlaceholder(data) {
 
                 data: {
 
-                    labels: labels,
+                    labels:
+                        labels,
 
 
                     datasets: [
+
+                        /* ================================
+                           CURRENT PLAN
+                           ================================= */
 
                         {
 
@@ -1510,16 +1536,16 @@ function updateChartPlaceholder(data) {
                                 "#9c285f",
 
                             backgroundColor:
-                                "rgba(156, 40, 95, 0.08)",
+                                "rgba(156, 40, 95, 0.05)",
 
                             borderWidth:
                                 3,
 
                             pointRadius:
-                                2,
+                                0,
 
                             pointHoverRadius:
-                                6,
+                                5,
 
                             tension:
                                 0.35,
@@ -1529,6 +1555,10 @@ function updateChartPlaceholder(data) {
 
                         },
 
+
+                        /* ================================
+                           WHAT-IF SCENARIO
+                           ================================= */
 
                         {
 
@@ -1542,16 +1572,16 @@ function updateChartPlaceholder(data) {
                                 "#ec70a5",
 
                             backgroundColor:
-                                "rgba(236, 112, 165, 0.12)",
+                                "rgba(236, 112, 165, 0.10)",
 
                             borderWidth:
                                 3,
 
                             pointRadius:
-                                2,
+                                0,
 
                             pointHoverRadius:
-                                6,
+                                5,
 
                             tension:
                                 0.35,
@@ -1598,16 +1628,6 @@ function updateChartPlaceholder(data) {
 
                         tooltip: {
 
-                            backgroundColor:
-                                "#2b2430",
-
-                            padding:
-                                12,
-
-                            displayColors:
-                                true,
-
-
                             callbacks: {
 
                                 label:
@@ -1641,67 +1661,13 @@ function updateChartPlaceholder(data) {
 
                             },
 
-
                             ticks: {
 
                                 color:
                                     "#8d7c86",
 
-                                font: {
-
-                                    size:
-                                        11
-
-                                },
-
-
-                                callback:
-                                    function(
-                                        value,
-                                        index
-                                    ) {
-
-                                        const month =
-                                            labels[index];
-
-                                        /*
-                                         * Avoid cluttering
-                                         * the chart.
-                                         */
-
-                                        if (
-                                            labels.length <= 12
-                                        ) {
-
-                                            return (
-                                                "M" + month
-                                            );
-
-                                        }
-
-
-                                        const step =
-                                            Math.ceil(
-                                                labels.length / 6
-                                            );
-
-
-                                        if (
-                                            index === 0 ||
-                                            index === labels.length - 1 ||
-                                            index % step === 0
-                                        ) {
-
-                                            return (
-                                                "M" + month
-                                            );
-
-                                        }
-
-
-                                        return "";
-
-                                    }
+                                maxTicksLimit:
+                                    8
 
                             }
 
@@ -1713,7 +1679,6 @@ function updateChartPlaceholder(data) {
                             beginAtZero:
                                 false,
 
-
                             grid: {
 
                                 color:
@@ -1721,30 +1686,19 @@ function updateChartPlaceholder(data) {
 
                             },
 
-
                             ticks: {
 
-                                color:
-                                    "#8d7c86",
+    color:
+        "#8d7c86",
 
-                                font: {
+    callback:
+        function(value) {
 
-                                    size:
-                                        11
+            return formatCurrency(value);
 
-                                },
+        }
 
-
-                                callback:
-                                    function(value) {
-
-                                        return formatCompactCurrency(
-                                            value
-                                        );
-
-                                    }
-
-                            }
+}
 
                         }
 
@@ -1756,8 +1710,6 @@ function updateChartPlaceholder(data) {
         );
 
 }
-}
-
 
 /* =========================================================
    CURRENCY FORMAT
