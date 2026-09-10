@@ -753,20 +753,92 @@
         </div>
 
 
-        <div class="chart-placeholder">
+        <div class="chart-container">
 
-            <span>📊</span>
+    <div class="chart-header">
+
+        <div>
+            <p class="chart-eyebrow">
+                FINANCIAL OUTLOOK
+            </p>
 
             <h3>
                 Savings trajectory
             </h3>
 
             <p>
-                The P10, P50 and P90 simulation chart
-                will appear here after the backend is connected.
+                Compare your current financial path with
+                the scenario you selected.
             </p>
+        </div>
+
+        <div class="chart-legend">
+
+            <span class="legend-item">
+                <i class="legend-dot baseline-dot"></i>
+                Current plan
+            </span>
+
+            <span class="legend-item">
+                <i class="legend-dot scenario-dot"></i>
+                What-if scenario
+            </span>
 
         </div>
+
+    </div>
+
+
+    <div class="chart-canvas-wrapper">
+
+        <canvas id="savingsChart"></canvas>
+
+    </div>
+
+
+    <div class="chart-summary">
+
+        <div class="chart-summary-item">
+
+            <span>Current plan</span>
+
+            <strong id="baselineFinalSavings">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="chart-summary-divider"></div>
+
+
+        <div class="chart-summary-item">
+
+            <span>What-if scenario</span>
+
+            <strong id="scenarioFinalSavings">
+                ₹0
+            </strong>
+
+        </div>
+
+
+        <div class="chart-summary-divider"></div>
+
+
+        <div class="chart-summary-item">
+
+            <span>Difference</span>
+
+            <strong id="savingsDifference">
+                ₹0
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
 
     </section>
 
@@ -782,7 +854,7 @@
 
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="index.js"></script>
 
 </body>

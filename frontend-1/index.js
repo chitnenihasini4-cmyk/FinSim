@@ -1312,16 +1312,10 @@ function displayRealResult(data) {
 
 function updateChartPlaceholder(data) {
 
-    const chart =
-        document.querySelector(
-            ".chart-placeholder"
-        );
+    let savingsChart = null;
 
 
-    if (!chart) {
-        return;
-    }
-
+function updateChartPlaceholder(data) {
 
     const baseline =
         data.baseline_projection || [];
@@ -1335,51 +1329,433 @@ function updateChartPlaceholder(data) {
         scenario.length === 0
     ) {
 
+        console.warn(
+            "Chart data is missing."
+        );
+
         return;
 
     }
 
 
+    /*
+     * Extract months
+     */
+
+    const labels =
+        scenario.map(
+            (item) => item.month
+        );
+
+
+    /*
+     * Extract savings values
+     */
+
+    const baselineSavings =
+        baseline.map(
+            (item) => Number(item.savings) || 0
+        );
+
+
+    const scenarioSavings =
+        scenario.map(
+            (item) => Number(item.savings) || 0
+        );
+
+
+    /*
+     * Final values
+     */
+
     const baselineFinal =
-        baseline[
-            baseline.length - 1
-        ].savings;
+        baselineSavings[
+            baselineSavings.length - 1
+        ] || 0;
 
 
     const scenarioFinal =
-        scenario[
-            scenario.length - 1
-        ].savings;
+        scenarioSavings[
+            scenarioSavings.length - 1
+        ] || 0;
 
 
-    chart.innerHTML = `
+    const difference =
+        scenarioFinal - baselineFinal;
 
-        <span>📊</span>
 
-        <h3>
-            Savings trajectory
-        </h3>
+    /*
+     * Update summary values
+     */
 
-        <p>
-            Your real financial-model simulation
-            contains ${scenario.length - 1}
-            projected months.
-        </p>
+    const baselineElement =
+        document.getElementById(
+            "baselineFinalSavings"
+        );
 
-        <p style="margin-top: 8px;">
-            Baseline:
-            <strong>
-                ${formatCurrency(baselineFinal)}
-            </strong>
-            &nbsp; • &nbsp;
-            Scenario:
-            <strong>
-                ${formatCurrency(scenarioFinal)}
-            </strong>
-        </p>
 
-    `;
+    const scenarioElement =
+        document.getElementById(
+            "scenarioFinalSavings"
+        );
 
+
+    const differenceElement =
+        document.getElementById(
+            "savingsDifference"
+        );
+
+
+    if (baselineElement) {
+
+        baselineElement.textContent =
+            formatCurrency(
+                baselineFinal
+            );
+
+    }
+
+
+    if (scenarioElement) {
+
+        scenarioElement.textContent =
+            formatCurrency(
+                scenarioFinal
+            );
+
+    }
+
+
+    if (differenceElement) {
+
+        const sign =
+            difference > 0
+                ? "+"
+                : difference < 0
+                    ? "−"
+                    : "";
+
+        differenceElement.textContent =
+            sign +
+            formatCurrency(
+                Math.abs(difference)
+            );
+
+    }
+
+
+    /*
+     * Get canvas
+     */
+
+    const canvas =
+        document.getElementById(
+            "savingsChart"
+        );
+
+
+    if (!canvas) {
+
+        console.warn(
+            "Savings chart canvas not found."
+        );
+
+        return;
+
+    }
+
+
+    /*
+     * Destroy previous chart
+     *
+     * Important when the user runs
+     * multiple simulations.
+     */
+
+    if (savingsChart) {
+
+        savingsChart.destroy();
+
+    }
+
+
+    /*
+     * Create the new chart
+     */
+
+    savingsChart =
+        new Chart(
+            canvas,
+            {
+
+                type: "line",
+
+
+                data: {
+
+                    labels: labels,
+
+
+                    datasets: [
+
+                        {
+
+                            label:
+                                "Current plan",
+
+                            data:
+                                baselineSavings,
+
+                            borderColor:
+                                "#9c285f",
+
+                            backgroundColor:
+                                "rgba(156, 40, 95, 0.08)",
+
+                            borderWidth:
+                                3,
+
+                            pointRadius:
+                                2,
+
+                            pointHoverRadius:
+                                6,
+
+                            tension:
+                                0.35,
+
+                            fill:
+                                false
+
+                        },
+
+
+                        {
+
+                            label:
+                                "What-if scenario",
+
+                            data:
+                                scenarioSavings,
+
+                            borderColor:
+                                "#ec70a5",
+
+                            backgroundColor:
+                                "rgba(236, 112, 165, 0.12)",
+
+                            borderWidth:
+                                3,
+
+                            pointRadius:
+                                2,
+
+                            pointHoverRadius:
+                                6,
+
+                            tension:
+                                0.35,
+
+                            fill:
+                                true
+
+                        }
+
+                    ]
+
+                },
+
+
+                options: {
+
+                    responsive:
+                        true,
+
+                    maintainAspectRatio:
+                        false,
+
+
+                    interaction: {
+
+                        mode:
+                            "index",
+
+                        intersect:
+                            false
+
+                    },
+
+
+                    plugins: {
+
+                        legend: {
+
+                            display:
+                                false
+
+                        },
+
+
+                        tooltip: {
+
+                            backgroundColor:
+                                "#2b2430",
+
+                            padding:
+                                12,
+
+                            displayColors:
+                                true,
+
+
+                            callbacks: {
+
+                                label:
+                                    function(context) {
+
+                                        return (
+                                            context.dataset.label +
+                                            ": " +
+                                            formatCurrency(
+                                                context.parsed.y
+                                            )
+                                        );
+
+                                    }
+
+                            }
+
+                        }
+
+                    },
+
+
+                    scales: {
+
+                        x: {
+
+                            grid: {
+
+                                display:
+                                    false
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#8d7c86",
+
+                                font: {
+
+                                    size:
+                                        11
+
+                                },
+
+
+                                callback:
+                                    function(
+                                        value,
+                                        index
+                                    ) {
+
+                                        const month =
+                                            labels[index];
+
+                                        /*
+                                         * Avoid cluttering
+                                         * the chart.
+                                         */
+
+                                        if (
+                                            labels.length <= 12
+                                        ) {
+
+                                            return (
+                                                "M" + month
+                                            );
+
+                                        }
+
+
+                                        const step =
+                                            Math.ceil(
+                                                labels.length / 6
+                                            );
+
+
+                                        if (
+                                            index === 0 ||
+                                            index === labels.length - 1 ||
+                                            index % step === 0
+                                        ) {
+
+                                            return (
+                                                "M" + month
+                                            );
+
+                                        }
+
+
+                                        return "";
+
+                                    }
+
+                            }
+
+                        },
+
+
+                        y: {
+
+                            beginAtZero:
+                                false,
+
+
+                            grid: {
+
+                                color:
+                                    "rgba(194, 24, 104, 0.08)"
+
+                            },
+
+
+                            ticks: {
+
+                                color:
+                                    "#8d7c86",
+
+                                font: {
+
+                                    size:
+                                        11
+
+                                },
+
+
+                                callback:
+                                    function(value) {
+
+                                        return formatCompactCurrency(
+                                            value
+                                        );
+
+                                    }
+
+                            }
+
+                        }
+
+                    }
+
+                }
+
+            }
+        );
+
+}
 }
 
 
