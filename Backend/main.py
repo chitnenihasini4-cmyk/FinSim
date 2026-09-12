@@ -149,9 +149,10 @@ SUPPORTED_SCENARIOS = {
     "recurring_expense",
     "income_change",
     "emergency",
-    "loan"
+    "loan",
+    "vacation",
+    "savings_rate"
 }
-
 
 # =========================================================
 # HEALTH CHECK
@@ -298,20 +299,28 @@ def simulate(request: ScenarioRequest):
 
 
     elif scenario == "loan":
-
         required = [
-            "loan_amount",
-            "annual_interest_rate",
-            "loan_tenure_months",
-            "loan_start_month"
-        ]
+        "loan_amount",
+        "annual_interest_rate",
+        "loan_tenure_months",
+        "loan_start_month"
+    ]
+        validate_scenario_inputs(scenario_inputs, required)
 
-        validate_scenario_inputs(
-            scenario_inputs,
-            required
-        )
+    elif scenario == "vacation":
+        required = [
+        "vacation_amount",
+        "vacation_month"
+    ]
+        validate_scenario_inputs(scenario_inputs, required)
 
-
+    elif scenario == "savings_rate":
+        required = [
+        "savings_rate_change",
+        "start_month"
+    ]
+        validate_scenario_inputs(scenario_inputs, required)
+    
     # -----------------------------------------------------
     # Run EXISTING financial model
     # -----------------------------------------------------

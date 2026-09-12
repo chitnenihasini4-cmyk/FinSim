@@ -245,21 +245,15 @@ const scenarioConfig = {
 
 
     /*
-     * These two scenarios are displayed in the UI,
-     * but the current financial model does not yet
-     * support them.
-     *
-     * We will connect them after their model logic
-     * is implemented properly.
-     */
+ * Vacation and Savings Rate are now connected
+ * to the backend financial model.
+ */
 
     vacation: {
         title: "Vacation",
 
-        description:
-            "Vacation simulation will be available once the financial model supports it.",
-
-        icon: "✈️",
+       description:
+        "Enter the vacation cost and when you plan to take it.", 
 
         fields: [
             {
@@ -283,7 +277,6 @@ const scenarioConfig = {
             }
         ],
 
-        backendSupported: false
     },
 
 
@@ -291,7 +284,7 @@ const scenarioConfig = {
         title: "Savings Rate",
 
         description:
-            "Savings-rate simulation will be available once the financial model supports it.",
+        "Explore how changing the portion of your income you save could affect your future savings.",
 
         icon: "📈",
 
@@ -317,7 +310,6 @@ const scenarioConfig = {
             }
         ],
 
-        backendSupported: false
     }
 };
 
@@ -1289,6 +1281,8 @@ function displayRealResult(data) {
         data
     );
 
+    updateFinancialInsight(data);
+
 
     /*
      * Scroll to results
@@ -1711,7 +1705,245 @@ savingsChart = null;
 
 }
 
-/* =========================================================
+// ================================
+// FINANCIAL INSIGHT
+// ================================
+
+function updateFinancialInsight(data) {
+
+    const insightTitle =
+        document.getElementById("insightTitle");
+
+    const insightMessage =
+        document.getElementById("insightMessage");
+
+    if (!insightTitle || !insightMessage) {
+        return;
+    }
+
+    const scenario = data.scenario;
+
+    const goalImpact = data.goal_impact || {};
+
+    const baselineFinal =
+        Number(goalImpact.baseline_final_savings ?? 0);
+
+    const scenarioFinal =
+        Number(goalImpact.scenario_final_savings ?? 0);
+
+    const difference =
+        scenarioFinal - baselineFinal;
+
+    const goalDelay =
+        Number(goalImpact.goal_delay_months ?? 0);
+
+    const absDifference =
+        Math.abs(difference);
+
+    const formattedDifference =
+        formatCurrency(absDifference);
+
+
+    // ================================
+    // SCENARIO-SPECIFIC NAMES
+    // ================================
+
+    const scenarioNames = {
+
+        purchase: "This purchase",
+
+        loan: "This loan",
+
+        income_change: "This income change",
+
+        recurring_expense:
+            "This recurring expense change",
+
+        emergency:
+            "This emergency expense",
+
+        vacation:
+            "This vacation",
+
+        savings_rate:
+            "This savings-rate change"
+    };
+
+    const scenarioName =
+        scenarioNames[scenario] || "This scenario";
+
+
+    // ================================
+    // POSITIVE OUTCOME
+    // ================================
+
+    if (difference > 0) {
+
+        switch (scenario) {
+
+            case "savings_rate":
+
+                insightTitle.textContent =
+                    "Increasing your savings rate could strengthen your financial future.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could increase your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            case "income_change":
+
+                insightTitle.textContent =
+                    "This income change could improve your financial position.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could increase your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            default:
+
+                insightTitle.textContent =
+                    "This scenario improves your projected savings.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could increase your projected savings by ${formattedDifference} over the simulation period.`;
+        }
+
+
+        if (goalDelay < 0) {
+
+            const monthsEarlier =
+                Math.abs(goalDelay);
+
+            insightMessage.textContent +=
+                ` Your goal could also be reached ${monthsEarlier} month${monthsEarlier === 1 ? "" : "s"} earlier.`;
+        }
+
+        return;
+    }
+
+
+    // ================================
+    // NEGATIVE OUTCOME
+    // ================================
+
+    if (difference < 0) {
+
+        switch (scenario) {
+
+            case "purchase":
+
+                insightTitle.textContent =
+                    "This purchase would reduce your future savings.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            case "loan":
+
+                insightTitle.textContent =
+                    "This loan could put pressure on your future savings.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference}, mainly because of the additional monthly loan payments.`;
+
+                break;
+
+
+            case "income_change":
+
+                insightTitle.textContent =
+                    "This income change could weaken your savings trajectory.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            case "recurring_expense":
+
+                insightTitle.textContent =
+                    "Higher recurring expenses could slow your savings growth.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period because of the additional monthly expense.`;
+
+                break;
+
+
+            case "emergency":
+
+                insightTitle.textContent =
+                    "This emergency expense creates a significant savings impact.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            case "vacation":
+
+                insightTitle.textContent =
+                    "This vacation would reduce your future savings.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            case "savings_rate":
+
+                insightTitle.textContent =
+                    "A lower savings rate could slow your financial progress.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period.`;
+
+                break;
+
+
+            default:
+
+                insightTitle.textContent =
+                    "This scenario reduces your projected savings.";
+
+                insightMessage.textContent =
+                    `${scenarioName} could reduce your projected savings by ${formattedDifference} over the simulation period.`;
+        }
+
+
+        if (goalDelay > 0) {
+
+            insightMessage.textContent +=
+                ` Your goal could be delayed by approximately ${goalDelay} month${goalDelay === 1 ? "" : "s"}.`;
+        }
+
+        return;
+    }
+
+
+    // ================================
+    // NO SIGNIFICANT DIFFERENCE
+    // ================================
+
+    insightTitle.textContent =
+        "This scenario has little impact on your projected savings.";
+
+    insightMessage.textContent =
+        `${scenarioName} produces almost the same projected savings as your current plan.`;
+}
+
+
+/*=====================================
    CURRENCY FORMAT
    ========================================================= */
 

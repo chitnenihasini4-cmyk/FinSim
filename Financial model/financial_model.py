@@ -92,6 +92,92 @@ def calculate_purchase_scenario(
 
     return projection
 
+# VACATION SCENARIO
+
+def calculate_vacation_scenario(
+    current_savings,
+    monthly_cash_flow,
+    months,
+    vacation_amount,
+    vacation_month
+):
+    projection = []
+
+    savings = current_savings
+
+    projection.append({
+        "month": 0,
+        "savings": savings
+    })
+
+    for month in range(1, months + 1):
+
+        if month == vacation_month:
+            savings = savings - vacation_amount
+
+        savings = savings + monthly_cash_flow
+
+        projection.append({
+            "month": month,
+            "savings": savings
+        })
+
+    return projection
+
+# SAVINGS RATE SCENARIO
+
+def calculate_savings_rate_scenario(
+    current_savings,
+    monthly_income,
+    other_income,
+    monthly_cash_flow,
+    months,
+    savings_rate_change,
+    start_month
+):
+    projection = []
+
+    savings = current_savings
+
+    total_income = monthly_income + other_income
+
+    if total_income <= 0:
+        changed_cash_flow = monthly_cash_flow
+    else:
+        current_savings_rate = (
+            monthly_cash_flow / total_income
+        )
+
+        new_savings_rate = (
+            current_savings_rate
+            + savings_rate_change / 100
+        )
+
+        changed_cash_flow = (
+            total_income * new_savings_rate
+        )
+
+    projection.append({
+        "month": 0,
+        "savings": savings
+    })
+
+    for month in range(1, months + 1):
+
+        if month >= start_month:
+            current_cash_flow = changed_cash_flow
+        else:
+            current_cash_flow = monthly_cash_flow
+
+        savings = savings + current_cash_flow
+
+        projection.append({
+            "month": month,
+            "savings": savings
+        })
+
+    return projection
+
 #RECURRING EXPENSE SCENARIO
 
 def calculate_recurring_expense_scenario(
@@ -633,6 +719,26 @@ def run_simulation(
             emergency_month=scenario_inputs["emergency_month"]
         )
 
+    elif scenario == "vacation":
+        scenario_projection = calculate_vacation_scenario(
+            current_savings=current_savings,
+            monthly_cash_flow=monthly_cash_flow,
+            months=simulation_months,
+            vacation_amount=scenario_inputs["vacation_amount"],
+            vacation_month=scenario_inputs["vacation_month"]
+        )
+
+
+    elif scenario == "savings_rate":
+        scenario_projection = calculate_savings_rate_scenario(
+            current_savings=current_savings,
+            monthly_income=monthly_income,
+            other_income=other_income,
+            monthly_cash_flow=monthly_cash_flow,
+            months=simulation_months,
+            savings_rate_change=scenario_inputs["savings_rate_change"],
+            start_month=scenario_inputs["start_month"]
+        )
 
     elif scenario == "loan":
 
@@ -863,6 +969,35 @@ def format_simulation_result(result):
         formatted_result["emergency_month"] = (
             scenario_inputs["emergency_month"]
         )
+
+        # -------------------------
+    # Vacation
+    # -------------------------
+
+    elif scenario == "vacation":
+
+        formatted_result["vacation_amount"] = (
+            scenario_inputs["vacation_amount"]
+        )
+
+        formatted_result["vacation_month"] = (
+            scenario_inputs["vacation_month"]
+        )
+
+
+    # -------------------------
+    # Savings Rate
+    # -------------------------
+
+    elif scenario == "savings_rate":
+
+        formatted_result["savings_rate_change"] = (
+            scenario_inputs["savings_rate_change"]
+        )
+
+        formatted_result["savings_rate_start_month"] = (
+            scenario_inputs["start_month"]
+        )    
 
 
     # -------------------------
