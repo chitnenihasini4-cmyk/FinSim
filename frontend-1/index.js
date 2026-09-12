@@ -2051,7 +2051,7 @@ resetButton.addEventListener(
                 "existingEmi"
             ) {
 
-                input.value = 0;
+                input.value = "";
 
             }
 
